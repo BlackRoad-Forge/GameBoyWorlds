@@ -55,6 +55,7 @@ class RandomPatchProjection:
     def _embed_single(self, item: Union[np.ndarray, Image]) -> torch.Tensor:
         item = np.array(item)
         grid_cells = StateParser.capture_grid_cells(item, y_offset=0)
+        # Always 90 grid cells that are 16x16 (because 160 * 144)
         cell_embeddings = []
         cell_keys = sorted(grid_cells.keys())
         for key in cell_keys:
@@ -63,18 +64,18 @@ class RandomPatchProjection:
             cell_image_flat = cell_image_resized.flatten()
             cell_image_tensor = torch.tensor(
                 cell_image_flat,
-                dtype=torch.float32,
+                dtype=torch.bfloat16,
                 device=self.random_projection[0].weight.device,
             )
             with torch.no_grad():
                 cell_embedding = self.random_projection(cell_image_tensor)
+                # normalize
+                cell_embedding = cell_embedding / (cell_embedding.norm()+1e-6)
             cell_embeddings.append(cell_embedding)
-        # image_embedding = torch.cat(cell_embeddings, dim=0)
-        cell_embeddings_tensor = torch.stack(cell_embeddings, dim=0)
-        image_embedding = torch.mean(cell_embeddings_tensor, dim=0)
-        # normalize
-        image_embedding = image_embedding / image_embedding.norm()
-        return image_embedding  # Should be of shape (cell_reduction_dimension,)
+        #cell_embeddings_tensor = torch.stack(cell_embeddings, dim=0)
+        #image_embedding = torch.mean(cell_embeddings_tensor, dim=0) # shape (cell_reduction_dimension,)
+        image_embedding = torch.cat(cell_embeddings, dim=0) # shape (cell_reduction_dimension*90,)
+        return image_embedding
 
     def project(self, items: List[Union[np.ndarray, Image]]) -> torch.Tensor:
         embeddings = []
