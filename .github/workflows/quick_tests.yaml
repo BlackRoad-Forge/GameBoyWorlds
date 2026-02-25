@@ -1,0 +1,21 @@
+name: Quick tests
+
+on:
+  push:
+    branches:
+      - "**"
+  # Optional: lets you run it manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  quick_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x ./quick_tests.sh
+
+      - name: Run quick tests
+        run: ./quick_tests.sh
