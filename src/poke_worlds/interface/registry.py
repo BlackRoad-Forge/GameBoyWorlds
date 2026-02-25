@@ -31,6 +31,9 @@ from poke_worlds.interface.pokemon.environments import (
     PokemonTrainEnvironment,
 )
 from poke_worlds.interface.pokemon.controllers import PokemonStateWiseController
+from poke_worlds.interface.legend_of_zelda.controllers import (
+    LegendOfZeldaStateWiseController,
+)
 
 
 _project_parameters = load_parameters()
@@ -112,9 +115,15 @@ AVAILABLE_CONTROLLERS: Dict[str, Dict[str, Type[Controller]]] = {
     "pokemon_fools_gold": {
         "state_wise": PokemonStateWiseController,
     },
-    "legend_of_zelda_links_awakening": {},
-    "legend_of_zelda_the_oracle_of_ages": {},
-    "legend_of_zelda_the_oracle_of_seasons": {},
+    "legend_of_zelda_links_awakening": {
+        "state_wise": LegendOfZeldaStateWiseController,
+    },
+    "legend_of_zelda_the_oracle_of_ages": {
+        "state_wise": LegendOfZeldaStateWiseController,
+    },
+    "legend_of_zelda_the_oracle_of_seasons": {
+        "state_wise": LegendOfZeldaStateWiseController,
+    },
 }
 
 for game in AVAILABLE_GAMES:

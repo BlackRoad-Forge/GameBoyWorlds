@@ -1,7 +1,7 @@
 from poke_worlds.utils import verify_parameters, log_error
 from poke_worlds.emulation.parser import StateParser, NamedScreenRegion
 import os
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 def _get_proper_regions(
     override_regions: List[Tuple[str, int, int, int, int]],
@@ -41,7 +41,13 @@ class BaseLegendOfZeldaParser(StateParser):
     - dialogue_bottom: Dialogues may sometimes appear at the bottom.
     """
 
-    def __init__(self, variant: str, pyboy, parameters, override_regions: List[Tuple[str,int,int,int,int]]):
+    def __init__(
+        self,
+        variant: str,
+        pyboy,
+        parameters,
+        override_regions: Optional[List[Tuple[str, int, int, int, int]]] = None,
+    ):
         """
         Args:
             variant: Zelda variant string (e.g., legend_of_zelda_links_awakening).
@@ -59,9 +65,11 @@ class BaseLegendOfZeldaParser(StateParser):
         captures_dir = self.rom_data_path + "/captures/"
         named_screen_regions = []
         
+        if override_regions is None:
+            override_regions = []
         regions = _get_proper_regions(
-        override_regions=override_regions,
-        base_regions=self.COMMON_REGIONS,
+            override_regions=override_regions,
+            base_regions=self.COMMON_REGIONS,
         )
         
         #for region_name, x, y, w, h in self.COMMON_REGIONS:

@@ -49,6 +49,7 @@ from poke_worlds.emulation.legend_of_zelda.parsers import (
     LegendOfZeldaTheOracleOfAgesParser,
     LegendOfZeldaTheOracleOfSeasonsParser,
 )
+from poke_worlds.emulation.legend_of_zelda.trackers import CoreLegendOfZeldaTracker
 
 _project_parameters = load_parameters()
 GAME_TO_GB_NAME = {
@@ -117,9 +118,9 @@ AVAILABLE_STATE_TRACKERS: Dict[str, Dict[str, Type[StateTracker]]] = {
     "pokemon_prism": {
         "default": PokemonOCRTracker,
     },
-    "legend_of_zelda_links_awakening": {"default": StateTracker},
-    "legend_of_zelda_the_oracle_of_ages": {"default": StateTracker},
-    "legend_of_zelda_the_oracle_of_seasons": {"default": StateTracker},
+    "legend_of_zelda_links_awakening": {"default": CoreLegendOfZeldaTracker},
+    "legend_of_zelda_the_oracle_of_ages": {"default": CoreLegendOfZeldaTracker},
+    "legend_of_zelda_the_oracle_of_seasons": {"default": CoreLegendOfZeldaTracker},
 }
 """ Mapping of game names to their available StateTracker classes with string identifiers. """
 
