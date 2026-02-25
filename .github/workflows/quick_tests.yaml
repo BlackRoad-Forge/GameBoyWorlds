@@ -25,5 +25,6 @@ jobs:
           echo PATH=$PATH >> $GITHUB_ENV
       - run: uv pip install -e ".[vlm]"
       - run: chmod +x ./quick_tests.sh
+      - run: which pip ; pip list
       - name: Run quick tests
         run: ./quick_tests.sh
